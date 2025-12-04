@@ -1,0 +1,27 @@
+﻿@model List<IkinciElPlatform.Models.Category>
+
+<h2>Kategori Listesi</h2>
+
+<a asp-action="Create">Yeni Kategori Ekle</a>
+
+<br />
+<br />
+
+<table border="1" cellpadding="6">
+    <tr>
+        <th>ID</th>
+        <th>Kategori Adı</th>
+        <th>Sil</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,103 @@
+﻿@model IkinciElPlatform.Models.Product
+
+@{
+    ViewData["Title"] = "Ürün Düzenle";
+}
+
+<style>
+    body {
+        background: #f4f6f8 !important;
+    }
+
+    .edit-wrapper {
+        max-width: 720px;
+        margin: 50px auto 80px;
+        padding: 0 12px;
+    }
+
+    .edit-card {
+        background: white;
+        border-radius: 26px;
+        padding: 35px 30px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    .edit-title {
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 6px;
+        text-align: center;
+    }
+
+    .edit-subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 30px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .edit-btn {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 30px;
+        font-weight: 700;
+        border: none;
+        color: white;
+        background: linear-gradient(135deg, #6366f1, #22d3ee);
+        transition: 0.3s;
+    }
+
+    .edit-btn:hover {
+        filter: brightness(1.1);
+        transform: scale(1.03);
+    }
+</style>
+
+<div class="edit-wrapper">
+    <div class="edit-card">
+
+        <h2 class="edit-title">✏️ Ürün Düzenle</h2>
+        <p class="edit-subtitle">İlan bilgilerini güncelleyebilirsin</p>
+
+        <form asp-action="Edit" method="post">
+
+            <input type="hidden" asp-for="Id" />
+
+            <input asp-for="Title" class="form-control mb-3" placeholder="Ürün Adı" />
+
+            <textarea asp-for="Description" class="form-control mb-3" rows="3"></textarea>
+
+            <input asp-for="Price" type="number" class="form-control mb-3" />
+
+            <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select mb-3"></select>
+
+            <input asp-for="Brand" class="form-control mb-3" />
+
+            <select asp-for="Condition" class="form-select mb-3">
+                <option>Sıfır</option>
+                <option>Az Kullanılmış</option>
+                <option>İyi</option>
+            </select>
+
+            <input asp-for="Location" class="form-control mb-3" />
+
+            <div class="form-check mb-3">
+                <input asp-for="IsNegotiable" class="form-check-input" type="checkbox" />
+                <label class="form-check-label">Pazarlık Var</label>
+            </div>
+
+            <button type="submit" class="edit-btn">
+                Güncelle
+            </button>
+
+        </form>
+    </div>
+</div>

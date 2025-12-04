@@ -1,0 +1,51 @@
+﻿@model List<IkinciElPlatform.Models.Product>
+
+<h2 class="fw-bold mb-3">📦 Tüm İlanlar (Admin)</h2>
+
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Başlık</th>
+            <th>Kategori</th>
+            <th>Fiyat</th>
+            <th>Satıcı</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Category?.Name</td>
+                <td>@item.Price ₺</td>
+                <td>@item.SellerName</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Pasif</span>
+                    }
+                </td>
+                <td>
+                    <a href="/Admin/ToggleProductStatus/@item.Id"
+                       class="btn btn-warning btn-sm">
+                        🔄 Aktif / Pasif
+                    </a>
+
+                    <a href="/Admin/DeleteProduct/@item.Id"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('İlan silinsin mi?')">
+                        🗑 Sil
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

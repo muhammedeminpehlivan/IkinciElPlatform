@@ -1,0 +1,33 @@
+﻿@model List<IkinciElPlatform.Models.Category>
+
+<h2 class="fw-bold mb-3">📂 Kategoriler</h2>
+
+<a href="/Admin/CreateCategory" class="btn btn-success mb-3">
+    ➕ Yeni Kategori Ekle
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Kategori Adı</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>
+                    <a href="/Admin/DeleteCategory/@item.Id"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Kategori silinsin mi?')">
+                        🗑 Sil
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,133 @@
+﻿@model List<IkinciElPlatform.Models.Product>
+
+@{
+    ViewData["Title"] = "İlanlarım";
+}
+
+<style>
+    body {
+        background: #f4f6f8 !important;
+    }
+
+    .myproducts-wrapper {
+        max-width: 1100px;
+        margin: 40px auto 70px;
+        padding: 0 15px;
+    }
+
+    .myproducts-title {
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 25px;
+    }
+
+    .myproduct-card {
+        background: white;
+        border-radius: 18px;
+        padding: 14px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .myproduct-img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+
+    .myproduct-title {
+        font-weight: 600;
+        font-size: 15px;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .myproduct-desc {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 8px;
+        min-height: 34px;
+    }
+
+    .myproduct-bottom {
+        margin-top: auto;
+    }
+
+    .myproduct-price {
+        background: linear-gradient(135deg, #6366f1, #22c55e);
+        padding: 5px 11px;
+        border-radius: 999px;
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .myproduct-actions a {
+        margin-right: 6px;
+    }
+</style>
+
+<div class="myproducts-wrapper">
+
+    <h2 class="myproducts-title">👤 İlanlarım</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Henüz hiç ilan eklemediniz.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <div class="myproduct-card">
+
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" class="myproduct-img" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/300x200?text=Resim+Yok" class="myproduct-img" />
+                        }
+
+                        <div class="myproduct-title">@item.Title</div>
+
+                        <div class="myproduct-desc">
+                            @item.Description
+                        </div>
+
+                        <div class="myproduct-bottom">
+
+                            <div class="myproduct-price">@item.Price ₺</div>
+
+                            <div class="myproduct-actions">
+
+                                ✅ <!-- DÜZENLE BUTONU -->
+                                <a href="/Product/Edit/@item.Id" class="btn btn-warning btn-sm">
+                                    ✏️ Düzenle
+                                </a>
+
+                                ✅ <!-- SİL BUTONU (ileride kullanacağız) -->
+                                <a href="/Product/Delete/@item.Id" class="btn btn-danger btn-sm">
+                                    🗑️ Sil
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

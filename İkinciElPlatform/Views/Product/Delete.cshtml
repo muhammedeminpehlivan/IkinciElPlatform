@@ -1,0 +1,79 @@
+﻿@model IkinciElPlatform.Models.Product
+
+@{
+    ViewData["Title"] = "İlanı Sil";
+}
+
+<style>
+    body {
+        background: #f4f6f8 !important;
+    }
+
+    .delete-wrapper {
+        max-width: 600px;
+        margin: 60px auto;
+        padding: 0 12px;
+    }
+
+    .delete-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+        text-align: center;
+    }
+
+    .delete-title {
+        font-weight: 800;
+        color: #b91c1c;
+        margin-bottom: 10px;
+    }
+
+    .delete-desc {
+        font-size: 15px;
+        color: #475569;
+        margin-bottom: 25px;
+    }
+
+    .delete-btn {
+        padding: 10px 26px;
+        border-radius: 999px;
+        border: none;
+        font-weight: 700;
+        margin: 0 6px;
+    }
+
+    .btn-danger-custom {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        color: white;
+    }
+
+    .btn-secondary-custom {
+        background: #e5e7eb;
+        color: #0f172a;
+    }
+</style>
+
+<div class="delete-wrapper">
+    <div class="delete-card">
+
+        <h3 class="delete-title">⚠️ İlanı Sil</h3>
+
+        <p class="delete-desc">
+            <b>@Model.Title</b> adlı ilanı tamamen silmek istediğine emin misin?
+        </p>
+
+        <form asp-action="DeleteConfirmed" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="delete-btn btn-danger-custom">
+                🗑️ Evet, Sil
+            </button>
+
+            <a href="/Profile/MyProducts" class="delete-btn btn-secondary-custom">
+                Vazgeç
+            </a>
+        </form>
+
+    </div>
+</div>

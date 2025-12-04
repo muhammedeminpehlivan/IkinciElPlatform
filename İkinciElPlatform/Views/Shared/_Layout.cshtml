@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - SHP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <!-- ✅ NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-warning fw-bold" href="/Admin">
+                        👑 Admin
+                    </a>
+                </li>
+            }
+
+
+            <a class="navbar-brand fw-bold" href="/">SHP</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <!-- ✅ SOL MENÜ -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ana Sayfa</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Product">İlanlar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Profile">Profilim</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Privacy">Gizlilik</a>
+                    </li>
+                </ul>
+
+                <!-- ✅ SAĞ MENÜ ARTIK SADECE LOGIN PARTIAL -->
+                <ul class="navbar-nav ms-auto">
+                    <partial name="_LoginPartial" />
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- ✅ SAYFA İÇERİĞİ -->
+    <main class="container mt-4 mb-5">
+        @RenderBody()
+    </main>
+
+    <!-- ✅ FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <div class="footer-left">
+                <h4>SHP</h4>
+                <p>Güvenli, hızlı ve modern ikinci el alışveriş platformu.</p>
+            </div>
+
+            <div class="footer-center">
+                <a href="/">Ana Sayfa</a>
+                <a href="/Product">İlanlar</a>
+                <a href="/Profile">Profilim</a>
+                <a href="/Home/Privacy">Gizlilik</a>
+            </div>
+
+            <div class="footer-right">
+                <span>© 2025 SHP</span>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ✅ JS -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <!-- ✅ NAVBAR + FOOTER CSS -->
+    <style>
+
+        body {
+            background: #f4f6f8;
+        }
+
+        .custom-navbar {
+            background: linear-gradient(135deg, #6366f1, #22c55e);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .site-footer {
+            background: linear-gradient(135deg, #6366f1, #22c55e);
+            padding: 30px 0;
+            color: white;
+            margin-top: 120px;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-left h4 {
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .footer-left p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .footer-center a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .footer-center a:hover {
+                text-decoration: underline;
+            }
+
+        .footer-right {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+
+</body>
+</html>

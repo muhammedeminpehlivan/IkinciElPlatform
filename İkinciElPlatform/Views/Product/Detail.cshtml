@@ -1,0 +1,129 @@
+﻿@model IkinciElPlatform.Models.Product
+
+@{
+    ViewData["Title"] = "Ürün Detayı";
+}
+
+<style>
+    body {
+        background: #f4f6f8 !important;
+    }
+
+    .detail-wrapper {
+        max-width: 900px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    .detail-img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 18px;
+        margin-bottom: 25px;
+    }
+
+    .detail-title {
+        font-weight: 800;
+        font-size: 26px;
+        color: #0f172a;
+        margin-bottom: 10px;
+    }
+
+    .detail-desc {
+        font-size: 15px;
+        color: #475569;
+        margin-bottom: 20px;
+    }
+
+    .detail-price {
+        background: linear-gradient(135deg, #6366f1, #22c55e);
+        padding: 8px 20px;
+        border-radius: 999px;
+        color: white;
+        font-weight: 700;
+        font-size: 15px;
+        display: inline-block;
+        margin-bottom: 12px;
+    }
+
+    .detail-category {
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .detail-back {
+        margin-top: 30px;
+        display: inline-block;
+        padding: 10px 24px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        color: #0f172a;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.25s;
+    }
+
+    .detail-back:hover {
+        background: #d1d5db;
+    }
+
+</style>
+<div style="
+    margin-top: 30px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 18px rgba(15,23,42,0.08);
+">
+    <h5 style="font-weight:700; margin-bottom:10px; color:#0f172a;">
+        👤 Satıcı Bilgileri
+    </h5>
+
+    <p style="margin:0 0 6px 0; font-size:15px; color:#0f172a;">
+        <b>Satıcı:</b> @Model.SellerName
+    </p>
+
+    <p style="margin:0; font-size:13px; color:#64748b;">
+        İlan Tarihi: @Model.CreatedDate.ToString("dd.MM.yyyy")
+    </p>
+</div>
+
+
+
+<div class="detail-wrapper">
+
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" class="detail-img" />
+    }
+
+    <div class="detail-title">@Model.Title</div>
+
+    <div class="detail-desc">@Model.Description</div>
+
+    <div class="detail-price">@Model.Price ₺</div>
+    <div class="detail-info">Marka: <b>@Model.Brand</b></div>
+    <div class="detail-info">Durum: <b>@Model.Condition</b></div>
+    <div class="detail-info">Şehir: <b>@Model.Location</b></div>
+    <div class="detail-info">
+        Pazarlık:
+        <b>@(Model.IsNegotiable ? "Var ✅" : "Yok ❌")</b>
+    </div>
+    <div class="detail-info">
+        İlan Tarihi:
+        <b>@Model.CreatedDate.ToString("dd.MM.yyyy")</b>
+    </div>
+
+
+    <div class="detail-category">Kategori: @Model.Category?.Name</div>
+
+    <br />
+
+    <a href="/Product" class="detail-back">← Tüm İlanlara Dön</a>
+
+</div>

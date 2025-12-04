@@ -1,0 +1,190 @@
+﻿@model List<IkinciElPlatform.Models.Product>
+
+@{
+    ViewData["Title"] = "Tüm İlanlar";
+}
+
+<form method="get" class="row g-3 mb-4 p-3 bg-white rounded shadow-sm align-items-end">
+
+    <!-- 🔍 Arama -->
+    <div class="col-md-3">
+        <label class="form-label fw-bold">Ürün Ara</label>
+        <input type="text" name="search" class="form-control"
+               placeholder="Ürün Ara..."
+               value="@Context.Request.Query["search"]" />
+    </div>
+
+    <!-- 📂 Kategori -->
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Kategori</label>
+        <select name="categoryId" class="form-control">
+            <option value="">Tümü</option>
+            @foreach (var cat in ViewBag.Categories)
+            {
+                <option value="@cat.Id">@cat.Name</option>
+            }
+        </select>
+    </div>
+
+    <!-- 💰 Min Fiyat -->
+    <div class="col-md-1">
+        <label class="form-label fw-bold">Min ₺</label>
+        <input type="number" name="minPrice" class="form-control"
+               placeholder="0" />
+    </div>
+
+    <!-- 💰 Max Fiyat -->
+    <div class="col-md-1">
+        <label class="form-label fw-bold">Max ₺</label>
+        <input type="number" name="maxPrice" class="form-control"
+               placeholder="9999" />
+    </div>
+
+    <!-- 🔽 SIRALA -->
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Sırala</label>
+        <select name="sort" class="form-control">
+            <option value="">Varsayılan</option>
+            <option value="priceAsc">Fiyat (Artan)</option>
+            <option value="priceDesc">Fiyat (Azalan)</option>
+            <option value="newest">En Yeni</option>
+            <option value="oldest">En Eski</option>
+        </select>
+    </div>
+
+    <!-- 🔘 BUTON -->
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary fw-bold">
+            🔍 Filtrele
+        </button>
+    </div>
+
+</form>
+
+
+
+
+<style>
+    body {
+        background: #f4f6f8 !important;
+    }
+
+    .products-wrapper {
+        max-width: 1100px;
+        margin: 40px auto 70px;
+        padding: 0 15px;
+    }
+
+    .products-title {
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 25px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+        transition: 0.25s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 22px rgba(15, 23, 42, 0.15);
+    }
+
+    .product-img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 8px;
+    }
+
+    .product-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #0f172a;
+        margin-bottom: 3px;
+    }
+
+    .product-desc {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 8px;
+        min-height: 32px;
+    }
+
+    .product-bottom {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .product-price {
+        background: linear-gradient(135deg, #6366f1, #22c55e);
+        padding: 4px 10px;
+        border-radius: 999px;
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .product-category {
+        font-size: 11px;
+        color: #6b7280;
+    }
+</style>
+
+<div class="products-wrapper">
+
+    <h2 class="products-title">🛒 Tüm İlanlar</h2>
+
+    <!-- ✅ BURASI DOĞRU YER: ÜRÜN YOKSA UYARI -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center fw-bold">
+            Filtreye uygun ürün bulunamadı.
+        </div>
+    }
+
+    <!-- ✅ ÜRÜNLER VARSA KARTLARI ÇİZ -->
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="/Product/Detail/@item.Id" style="text-decoration:none;">
+                    <div class="product-card">
+
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" class="product-img" />
+                        }
+
+                        <div class="product-title">@item.Title</div>
+
+                        <div class="product-desc">
+                            @item.Description
+                        </div>
+
+                        <div class="product-bottom">
+                            <div class="product-price">@item.Price ₺</div>
+                            <div class="product-category">@item.Category?.Name</div>
+                        </div>
+
+
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+</div>
+

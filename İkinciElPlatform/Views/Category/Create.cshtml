@@ -1,0 +1,16 @@
+﻿@model IkinciElPlatform.Models.Category
+
+<h2>Yeni Kategori Ekle</h2>
+
+<form asp-action="Create" method="post">
+    <label>Kategori Adı:</label>
+    <input asp-for="Name" />
+    <span asp-validation-for="Name" style="color:red"></span>
+
+    <br /><br />
+
+    <button type="submit">Kaydet</button>
+</form>
+
+<br />
+<a asp-action="Index">Listeye Dön</a>
