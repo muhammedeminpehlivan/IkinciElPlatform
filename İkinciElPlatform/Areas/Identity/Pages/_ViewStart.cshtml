@@ -1,3 +1,31 @@
 ﻿@{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item text-white me-3 mt-1">
+            Merhaba, @User.Identity.Name 👋
+        </li>
+
+        <li class="nav-item">
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
+                <button type="submit" class="btn btn-light btn-sm fw-bold">🚪 Çıkış Yap</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item me-2">
+            <a class="btn btn-light btn-sm" href="/Identity/Account/Login">Giriş</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="btn btn-outline-light btn-sm" href="/Identity/Account/Register">Kayıt Ol</a>
+        </li>
+    }
+</ul>

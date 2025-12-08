@@ -4,14 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Connection String
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
+// ✅ DATABASE
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ✅ Identity (LOGIN - REGISTER - LOGOUT - ROLE HEPSİ AKTİF)
+// ✅ IDENTITY
 builder.Services
     .AddIdentity<IdentityUser, IdentityRole>(options =>
     {
@@ -21,13 +18,12 @@ builder.Services
     .AddDefaultTokenProviders()
     .AddDefaultUI();
 
-// ✅ MVC + Razor
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// ✅ Hata Yönetimi
+// ✅ HATA YÖNETİMİ
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -43,37 +39,39 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// ✅ AUTH
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication();   // ✅ ZORUNLU
+app.UseAuthorization();    // ✅ ZORUNLU
 
-// ✅ ROUTING
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages(); // ✅ Identity sayfaları için şart
+app.MapRazorPages();  // ✅ LOGIN / REGISTER İÇİN ŞART
 
-// ✅ ✅ ✅ ADMIN ROL OTOMATİK OLUŞTURMA + MAİLİ ADMİN YAPMA
+// ==================================================
+// ✅ ✅ ✅ ADMIN ROLÜ OLUŞTUR + KULLANICIYA ATAMA
+// ==================================================
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-    // ✅ Admin Rolü Yoksa Oluştur
+    // ✅ ROL YOKSA OLUŞTUR
     if (!await roleManager.RoleExistsAsync("Admin"))
     {
         await roleManager.CreateAsync(new IdentityRole("Admin"));
     }
 
-    // ✅ ADMİN OLACAK MAİL
-    var adminEmail = "muhammedeminpehlivan@gmail.com";
+    // ✅ SADECE BU MAİL ADMİN OLUR
+    var adminEmail = "muhammedeminpehlivan@gmail.com";  // ✅ BURASI SENİN MAİL
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+    if (adminUser != null)
     {
-        await userManager.AddToRoleAsync(adminUser, "Admin");
+        if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
     }
 }
 

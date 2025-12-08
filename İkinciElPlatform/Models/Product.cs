@@ -8,38 +8,31 @@ namespace IkinciElPlatform.Models
         public int Id { get; set; }
 
         [Required]
-        public string Title { get; set; }   // Ürün Adı
+        public string Title { get; set; }
 
         [Required]
-        public string Description { get; set; }  // Açıklama
+        public string Description { get; set; }
 
         [Required]
-        public decimal Price { get; set; }  // ✅ FİYAT ARTIK DOĞRU TİPTE
-
-        public string? Brand { get; set; }
-
-        public string? Condition { get; set; }
-
-        public string? Location { get; set; }
-
-        public bool IsNegotiable { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }   // ✅ SADECE DECIMAL
 
         public string? ImageUrl { get; set; }
 
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-        public string? SellerName { get; set; }
+        public string Brand { get; set; }
+        public string Condition { get; set; }
+        public string Location { get; set; }
+        public bool IsNegotiable { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public DateTime CreatedDate { get; set; }
 
-        // ✅ KATEGORİ BAĞLANTISI
-        [Display(Name = "Kategori")]
+        public string SellerName { get; set; }
+        public string UserId { get; set; }
+
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
-        public Category? Category { get; set; }
-
-        // ✅ KULLANICI BAĞLANTISI
-        public string? UserId { get; set; }
+        public Category Category { get; set; }
     }
 }
