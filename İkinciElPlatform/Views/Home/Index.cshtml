@@ -3,7 +3,13 @@
 @{
     ViewData["Title"] = "Ana Sayfa";
 }
+
 <style>
+    body {
+        background: #f4f6f8 !important;
+    }
+
+    /* ✅ HERO */
     .hero-section {
         background: linear-gradient(135deg, #6366f1, #22c55e);
         padding: 80px 20px;
@@ -11,6 +17,9 @@
         color: white;
         margin-bottom: 60px;
         text-align: center;
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hero-title {
@@ -47,8 +56,8 @@
             font-weight: 700;
             color: #22c55e;
         }
-</style>
-<style>
+
+    /* ✅ KATEGORİ */
     .category-title {
         font-size: 28px;
         font-weight: 800;
@@ -82,208 +91,49 @@
         color: #0f172a;
         font-size: 15px;
     }
-</style>
 
-<h2 class="category-title">📂 Kategoriler</h2>
-
-<div class="row">
-
-    @foreach (var cat in ViewBag.Categories)
-    {
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="/Product?categoryId=@cat.Id" style="text-decoration:none;">
-                <div class="category-card">
-
-                    <div class="category-icon">📦</div>
-
-                    <div class="category-name">
-                        @cat.Name
-                    </div>
-
-                </div>
-            </a>
-        </div>
-    }
-
-</div>
-
-<style>
+    /* ✅ KARTLAR */
     .featured-title {
         font-size: 28px;
         font-weight: 800;
         color: #0f172a;
-        margin-bottom: 25px;
+        margin: 70px 0 25px;
         text-align: center;
     }
 
-    .featured-card {
+    .featured-card,
+    .home-card {
         background: white;
         border-radius: 16px;
         padding: 12px;
         box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
         transition: 0.25s;
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
-        .featured-card:hover {
+        .featured-card:hover,
+        .home-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 14px 26px rgba(15, 23, 42, 0.15);
         }
 
-    .featured-img {
-        width: 100%;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 12px;
-        margin-bottom: 8px;
-    }
-
-    .featured-title-sm {
-        font-weight: 600;
-        font-size: 14px;
-        color: #0f172a;
-        margin-bottom: 3px;
-    }
-
-    .featured-price {
-        background: linear-gradient(135deg, #6366f1, #22c55e);
-        padding: 4px 10px;
-        border-radius: 999px;
-        color: white;
-        font-weight: 600;
-        font-size: 12px;
-        display: inline-block;
-    }
-</style>
-
-<h2 class="featured-title">🔥 Öne Çıkan İlanlar</h2>
-
-<div class="row">
-
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 col-sm-6 mb-4">
-            <a href="/Product/Detail/@item.Id" style="text-decoration:none;">
-                <div class="featured-card">
-
-                    @if (!string.IsNullOrEmpty(item.ImageUrl))
-                    {
-                        <img src="@item.ImageUrl" class="featured-img" />
-                    }
-
-                    <div class="featured-title-sm">@item.Title</div>
-
-                    <div class="featured-price">@item.Price ₺</div>
-
-                </div>
-            </a>
-        </div>
-    }
-
-</div>
-
-
-<div class="hero-section">
-
-    <div class="hero-title">
-        Aradığın Her Şey SHP’de!
-    </div>
-
-    <div class="hero-desc">
-        Güvenli, hızlı ve modern ikinci el alışverişin adresi.
-    </div>
-
-    <form class="hero-search" method="get" action="/Product">
-        <input type="text" name="search" placeholder="Ne arıyorsun?" />
-        <button type="submit">🔍 Ara</button>
-    </form>
-
-</div>
-<style>
-    body {
-        background: #f4f6f8 !important;
-    }
-
-    .home-wrapper {
-        max-width: 1100px;
-        margin: 40px auto 70px;
-        padding: 0 15px;
-    }
-
-    .home-hero {
-        background: linear-gradient(135deg, #6366f1, #22d3ee);
-        border-radius: 26px;
-        padding: 45px 30px;
-        color: white;
-        text-align: center;
-        box-shadow: 0 14px 30px rgba(0,0,0,0.18);
-        margin-bottom: 50px;
-    }
-
-        .home-hero h1 {
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .home-hero p {
-            font-size: 16px;
-            opacity: 0.95;
-        }
-
-    .home-hero-btn {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 12px 32px;
-        border-radius: 30px;
-        font-weight: 700;
-        color: white;
-        text-decoration: none;
-        background: linear-gradient(135deg, #22c55e, #16a34a);
-        transition: 0.3s;
-    }
-
-        .home-hero-btn:hover {
-            filter: brightness(1.1);
-            transform: scale(1.05);
-            color: white;
-        }
-
-    .home-section-title {
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 20px;
-    }
-
-    .home-card {
-        background: white;
-        border-radius: 18px;
-        padding: 14px;
-        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-        transition: 0.25s;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
-    }
-
-        .home-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.15);
-        }
-
+    .featured-img,
     .home-card-img {
         width: 100%;
         height: 150px;
         object-fit: cover;
         border-radius: 12px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
+    .featured-title-sm,
     .home-card-title {
         font-weight: 600;
-        font-size: 15px;
+        font-size: 14px;
         color: #0f172a;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
     }
 
     .home-card-desc {
@@ -293,13 +143,7 @@
         min-height: 34px;
     }
 
-    .home-card-bottom {
-        margin-top: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
+    .featured-price,
     .home-card-price {
         background: linear-gradient(135deg, #6366f1, #22c55e);
         padding: 5px 11px;
@@ -307,25 +151,107 @@
         color: white;
         font-weight: 600;
         font-size: 12px;
+        display: inline-block;
     }
 
-    .home-card-category {
-        font-size: 12px;
-        color: #6b7280;
+    .home-card-bottom {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .home-wrapper {
+        max-width: 1100px;
+        margin: 0 auto 70px;
+        padding: 0 15px;
     }
 </style>
 
-<div class="home-wrapper">
+<!-- ✅ HERO -->
+<div class="hero-section">
+    <div class="hero-title">Aradığın Her Şey SHP’de!</div>
+    <div class="hero-desc">Güvenli, hızlı ve modern ikinci el alışverişin adresi.</div>
 
-    <!-- ✅ ÜST BANNER -->
-    <div class="home-hero">
-        <h1>İkinci El Alışveriş Platformu</h1>
-        <p>Uygun fiyatlı ürünleri keşfet, hemen ilan ver!</p>
-        <a href="/Profile" class="home-hero-btn">👤 Profilime Git</a>
+    <form class="hero-search" method="get" action="/Product">
+        <input type="text" name="search" placeholder="Ne arıyorsun?" />
+        <button type="submit">🔍 Ara</button>
+    </form>
+</div>
+
+<!-- ✅ KATEGORİLER -->
+<div class="home-wrapper">
+    <h2 class="category-title">📂 Kategoriler</h2>
+
+    <div class="row">
+        @foreach (var cat in ViewBag.Categories)
+        {
+            <div class="col-md-3 col-sm-6 mb-4">
+                <a href="/Product?categoryId=@cat.Id" style="text-decoration:none;">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            @switch (cat.Name.ToLower())
+                            {
+                                case "elektronik":
+                                    <i class="fa-solid fa-tv"></i>
+                                    break;
+
+                                case "giyim":
+                                    <i class="fa-solid fa-shirt"></i>
+                                    break;
+
+                                case "ayakkabı":
+                                    <i class="fa-solid fa-shoe-prints"></i>
+                                    break;
+
+                                case "beyaz eşya":
+                                    <i class="fa-solid fa-blender"></i>
+                                    break;
+
+                                case "telefon":
+                                    <i class="fa-solid fa-mobile-screen"></i>
+                                    break;
+
+                                default:
+                                    <i class="fa-solid fa-box"></i>
+                                    break;
+                            }
+                        </div>
+
+                        <div class="category-name">@cat.Name</div>
+                    </div>
+                </a>
+            </div>
+        }
     </div>
 
-    <!-- ✅ SON İLANLAR -->
-    <h3 class="home-section-title">🆕 Son Eklenen İlanlar</h3>
+    <!-- ✅ EN ÇOK FAVORİLENENLER -->
+    @if (ViewBag.MostFavorited != null && ((List<IkinciElPlatform.Models.Product>)ViewBag.MostFavorited).Any())
+    {
+        <h2 class="featured-title">❤️ En Çok Favorilenen İlanlar</h2>
+
+        <div class="row">
+            @foreach (var item in (List<IkinciElPlatform.Models.Product>)ViewBag.MostFavorited)
+            {
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <a href="/Product/Detail/@item.Id" style="text-decoration:none;">
+                        <div class="featured-card">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" class="featured-img" />
+                            }
+
+                            <div class="featured-title-sm">@item.Title</div>
+                            <div class="featured-price">@item.Price ₺</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- ✅ SON EKLENENLER -->
+    <h2 class="featured-title">🆕 Son Eklenen İlanlar</h2>
 
     @if (!Model.Any())
     {
@@ -337,7 +263,6 @@
             @foreach (var item in Model)
             {
                 <div class="col-md-4 col-sm-6 mb-3">
-                    <!-- ✅ ARTIK TIKLANABİLİR -->
                     <a href="/Product/Detail/@item.Id" style="text-decoration:none;">
                         <div class="home-card">
 
@@ -363,5 +288,4 @@
             }
         </div>
     }
-
 </div>

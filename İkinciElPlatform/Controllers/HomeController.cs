@@ -1,4 +1,4 @@
-using IkinciElPlatform.Data;
+﻿using IkinciElPlatform.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,17 +13,39 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // ✅ KATEGORİLER (BU YOKTUĞU İÇİN HATA VERİYORDU)
+        var categories = _context.Categories.ToList();
+        ViewBag.Categories = categories;
+
+        // ✅ SON EKLENEN ÜRÜNLER
         var products = _context.Products
-            .OrderByDescending(p => p.CreatedDate)
+            .Where(x => x.IsActive)
+            .OrderByDescending(x => x.CreatedDate)
             .Take(6)
             .ToList();
 
-        var categories = _context.Categories.ToList();
+        // 🔥 EN ÇOK FAVORİLENEN ÜRÜNLER
+        var mostFavorited = _context.Favorites
+            .GroupBy(x => x.ProductId)
+            .Select(g => new
+            {
+                ProductId = g.Key,
+                Count = g.Count()
+            })
+            .OrderByDescending(x => x.Count)
+            .Take(6)
+            .Join(_context.Products,
+                  fav => fav.ProductId,
+                  product => product.Id,
+                  (fav, product) => product)
+            .ToList();
 
-        ViewBag.Categories = categories;
+        ViewBag.MostFavorited = mostFavorited;
 
         return View(products);
     }
+
+
 
 
 }

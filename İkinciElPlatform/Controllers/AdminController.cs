@@ -3,10 +3,11 @@ using IkinciElPlatform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace IkinciElPlatform.Controllers
 {
-    [Authorize(Roles = "Admin")]   // ✅ SADECE ADMİN GİRER
+    [Authorize(Roles = "Admin")] // ✅ Sadece ADMIN girebilir
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,13 +17,9 @@ namespace IkinciElPlatform.Controllers
             _context = context;
         }
 
-        // ✅ ADMİN ANA PANEL
+        // ✅ Admin Ana Sayfa
         public IActionResult Index()
         {
-            ViewBag.UserCount = _context.Users.Count();
-            ViewBag.ProductCount = _context.Products.Count();
-            ViewBag.CategoryCount = _context.Categories.Count();
-
             return View();
         }
 
@@ -34,15 +31,14 @@ namespace IkinciElPlatform.Controllers
         }
 
         // ✅ KATEGORİ EKLE (GET)
-        public IActionResult AddCategory()
+        public IActionResult CreateCategory()
         {
             return View();
         }
 
         // ✅ KATEGORİ EKLE (POST)
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddCategory(Category category)
+        public IActionResult CreateCategory(Category category)
         {
             if (ModelState.IsValid)
             {
@@ -59,56 +55,93 @@ namespace IkinciElPlatform.Controllers
         {
             var category = _context.Categories.FirstOrDefault(x => x.Id == id);
 
-            if (category == null)
-                return NotFound();
-
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            if (category != null)
+            {
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Categories");
         }
-
-        // ======================================================
-        // ✅ ✅ ✅  İLAN (ÜRÜN) YÖNETİMİ
-        // ======================================================
 
         // ✅ TÜM İLANLAR (ADMİN)
         public IActionResult Products()
         {
             var products = _context.Products
                 .Include(p => p.Category)
-                .OrderByDescending(p => p.CreatedDate)
+                .OrderByDescending(p => p.Id)
                 .ToList();
 
             return View(products);
         }
 
-        // ✅ İLAN AKTİF / PASİF YAP
-        public IActionResult ToggleProduct(int id)
+        // ✅ ADMİN → İLAN SİL
+        public IActionResult DeleteProduct(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(x => x.Id == id);
 
-            if (product == null)
-                return NotFound();
-
-            product.IsActive = !product.IsActive;
-            _context.SaveChanges();
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Products");
         }
 
-        // ✅ ADMİN İLAN SİL
-        public IActionResult DeleteProduct(int id)
+        // ✅ ADMİN → İLAN AKTİF/PASİF
+        public IActionResult ToggleProductStatus(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(x => x.Id == id);
 
-            if (product == null)
-                return NotFound();
-
-            _context.Products.Remove(product);
-            _context.SaveChanges();
+            if (product != null)
+            {
+                product.IsActive = !product.IsActive; // true ↔ false
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Products");
+        }
+
+        // ✅ ADMİN → İSTATİSTİKLER
+        public IActionResult Statistics()
+        {
+            // IdentityDbContext’ten gelir
+            var totalUsers = _context.Users.Count();
+
+            var totalProducts = _context.Products.Count();
+            var activeProducts = _context.Products.Count(x => x.IsActive);
+            var passiveProducts = _context.Products.Count(x => !x.IsActive);
+
+            var totalFavorites = _context.Favorites.Count();
+
+            var mostFavoritedProduct = _context.Favorites
+                .GroupBy(x => x.ProductId)
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(x => x.Count)
+                .FirstOrDefault();
+
+            Product? topProduct = null;
+
+            if (mostFavoritedProduct != null)
+            {
+                topProduct = _context.Products
+                    .Include(p => p.Category)
+                    .FirstOrDefault(x => x.Id == mostFavoritedProduct.ProductId);
+            }
+
+            ViewBag.TotalUsers = totalUsers;
+            ViewBag.TotalProducts = totalProducts;
+            ViewBag.ActiveProducts = activeProducts;
+            ViewBag.PassiveProducts = passiveProducts;
+            ViewBag.TotalFavorites = totalFavorites;
+            ViewBag.TopProduct = topProduct;
+
+            return View();
         }
     }
 }

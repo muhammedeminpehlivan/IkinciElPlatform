@@ -3,6 +3,35 @@
 @{
     ViewData["Title"] = "Ürün Detayı";
 }
+@if (TempData["FavoriteMessage"] != null)
+{
+    <div id="favAlert" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #22c55e;
+        color: white;
+        padding: 14px 22px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        z-index: 9999;
+        ">
+        @TempData["FavoriteMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var alert = document.getElementById("favAlert");
+            if (alert) {
+                alert.style.transition = "0.5s";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 2000);
+    </script>
+}
+
 
 <style>
     body {
@@ -53,6 +82,7 @@
     .detail-category {
         font-size: 14px;
         color: #6b7280;
+        margin-top: 8px;
     }
 
     .detail-back {
@@ -70,8 +100,9 @@
     .detail-back:hover {
         background: #d1d5db;
     }
-
 </style>
+
+<!-- ✅ SATICI BİLGİLERİ -->
 <div style="
     margin-top: 30px;
     background: #ffffff;
@@ -93,8 +124,6 @@
     </p>
 </div>
 
-
-
 <div class="detail-wrapper">
 
     @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -107,20 +136,44 @@
     <div class="detail-desc">@Model.Description</div>
 
     <div class="detail-price">@Model.Price ₺</div>
+
     <div class="detail-info">Marka: <b>@Model.Brand</b></div>
     <div class="detail-info">Durum: <b>@Model.Condition</b></div>
     <div class="detail-info">Şehir: <b>@Model.Location</b></div>
+
     <div class="detail-info">
         Pazarlık:
         <b>@(Model.IsNegotiable ? "Var ✅" : "Yok ❌")</b>
     </div>
+
     <div class="detail-info">
         İlan Tarihi:
         <b>@Model.CreatedDate.ToString("dd.MM.yyyy")</b>
     </div>
 
+    <div class="detail-category">
+        Kategori: @Model.Category?.Name
+    </div>
 
-    <div class="detail-category">Kategori: @Model.Category?.Name</div>
+    <!-- ✅ FAVORİ BUTONU -->
+    <div class="mt-4">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Favorite"
+               asp-action="Toggle"
+               asp-route-productId="@Model.Id"
+               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
+               class="btn btn-outline-danger">
+                ❤️ Favoriye Ekle / Kaldır
+            </a>
+        }
+        else
+        {
+            <p class="text-muted mt-2">
+                Favoriye eklemek için <a href="/Identity/Account/Login">giriş yap</a>.
+            </p>
+        }
+    </div>
 
     <br />
 
