@@ -1,0 +1,32 @@
+﻿@model List<IkinciElPlatform.Models.Purchase>
+
+@{
+    ViewData["Title"] = "Satın Aldıklarım";
+}
+
+<div class="container mt-5">
+    <h3 class="fw-bold mb-4">🛒 Satın Aldıklarım</h3>
+
+    @if (!Model.Any())
+    {
+        <p>Henüz satın aldığın ürün yok.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3 h-100">
+                        <h6>@item.Product.Title</h6>
+                        <div>@item.Product.Price ₺</div>
+                        <span class="badge bg-success mt-2">Satın Alındı</span>
+                        <div class="text-muted mt-1" style="font-size:12px;">
+                            @item.PurchaseDate.ToString("dd.MM.yyyy")
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

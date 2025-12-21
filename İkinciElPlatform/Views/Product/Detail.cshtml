@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Ürün Detayı";
 }
+
+<!-- ❤️ FAVORİ MESAJI -->
 @if (TempData["FavoriteMessage"] != null)
 {
     <div id="favAlert" style="
@@ -15,23 +17,42 @@
         border-radius: 12px;
         font-weight: 600;
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        z-index: 9999;
-        ">
+        z-index: 9999;">
         @TempData["FavoriteMessage"]
     </div>
 
     <script>
-        setTimeout(function () {
-            var alert = document.getElementById("favAlert");
-            if (alert) {
-                alert.style.transition = "0.5s";
-                alert.style.opacity = "0";
-                setTimeout(() => alert.remove(), 500);
-            }
+        setTimeout(() => {
+            const a = document.getElementById("favAlert");
+            if (a) { a.style.opacity = "0"; setTimeout(() => a.remove(), 500); }
         }, 2000);
     </script>
 }
 
+<!-- 🛒 SATIN AL MESAJI -->
+@if (TempData["BuyMessage"] != null)
+{
+    <div id="buyAlert" style="
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: #16a34a;
+        color: white;
+        padding: 14px 22px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        z-index: 9999;">
+        @TempData["BuyMessage"]
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const a = document.getElementById("buyAlert");
+            if (a) { a.style.opacity = "0"; setTimeout(() => a.remove(), 500); }
+        }, 2000);
+    </script>
+}
 
 <style>
     body {
@@ -79,12 +100,6 @@
         margin-bottom: 12px;
     }
 
-    .detail-category {
-        font-size: 14px;
-        color: #6b7280;
-        margin-top: 8px;
-    }
-
     .detail-back {
         margin-top: 30px;
         display: inline-block;
@@ -94,32 +109,20 @@
         color: #0f172a;
         font-weight: 600;
         text-decoration: none;
-        transition: 0.25s;
-    }
-
-    .detail-back:hover {
-        background: #d1d5db;
     }
 </style>
 
-<!-- ✅ SATICI BİLGİLERİ -->
+<!-- 👤 SATICI BİLGİLERİ -->
 <div style="
-    margin-top: 30px;
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 22px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 8px 18px rgba(15,23,42,0.08);
-">
-    <h5 style="font-weight:700; margin-bottom:10px; color:#0f172a;">
-        👤 Satıcı Bilgileri
-    </h5>
-
-    <p style="margin:0 0 6px 0; font-size:15px; color:#0f172a;">
-        <b>Satıcı:</b> @Model.SellerName
-    </p>
-
-    <p style="margin:0; font-size:13px; color:#64748b;">
+    margin-top:30px;
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 8px 18px rgba(15,23,42,0.08);">
+    <h5 style="font-weight:700;">👤 Satıcı Bilgileri</h5>
+    <p><b>Satıcı:</b> @Model.SellerName</p>
+    <p style="font-size:13px;color:#64748b;">
         İlan Tarihi: @Model.CreatedDate.ToString("dd.MM.yyyy")
     </p>
 </div>
@@ -132,30 +135,19 @@
     }
 
     <div class="detail-title">@Model.Title</div>
-
     <div class="detail-desc">@Model.Description</div>
-
     <div class="detail-price">@Model.Price ₺</div>
 
-    <div class="detail-info">Marka: <b>@Model.Brand</b></div>
-    <div class="detail-info">Durum: <b>@Model.Condition</b></div>
-    <div class="detail-info">Şehir: <b>@Model.Location</b></div>
+    <div>Marka: <b>@Model.Brand</b></div>
+    <div>Durum: <b>@Model.Condition</b></div>
+    <div>Şehir: <b>@Model.Location</b></div>
+    <div>Pazarlık: <b>@(Model.IsNegotiable ? "Var ✅" : "Yok ❌")</b></div>
 
-    <div class="detail-info">
-        Pazarlık:
-        <b>@(Model.IsNegotiable ? "Var ✅" : "Yok ❌")</b>
+    <div class="mt-3">
+        Kategori: <b>@Model.Category?.Name</b>
     </div>
 
-    <div class="detail-info">
-        İlan Tarihi:
-        <b>@Model.CreatedDate.ToString("dd.MM.yyyy")</b>
-    </div>
-
-    <div class="detail-category">
-        Kategori: @Model.Category?.Name
-    </div>
-
-    <!-- ✅ FAVORİ BUTONU -->
+    <!-- ❤️ FAVORİ -->
     <div class="mt-4">
         @if (User.Identity.IsAuthenticated)
         {
@@ -169,14 +161,68 @@
         }
         else
         {
-            <p class="text-muted mt-2">
+            <p class="text-muted">
                 Favoriye eklemek için <a href="/Identity/Account/Login">giriş yap</a>.
             </p>
         }
     </div>
 
-    <br />
+    <!-- 🛒 SATIN AL -->
+    <div class="mt-3">
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (Model.IsActive)
+            {
+                <form method="post" action="/Product/Buy/@Model.Id">
+                    <button class="btn btn-success btn-lg">
+                       
+                    </button>
+                </form>
+            }
+            else
+            {
+                <span class="badge bg-danger fs-6">❌ SATILDI</span>
+            }
+        }
+        else
+        {
+            <p class="text-muted">
+                Satın almak için <a href="/Identity/Account/Login">giriş yap</a>.
+            </p>
+        }
+    </div>
 
-    <a href="/Product" class="detail-back">← Tüm İlanlara Dön</a>
+    <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#buyModal">
+        🛒 Satın Al
+    </button>
 
 </div>
+<div class="modal fade" id="buyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">🛒 Satın Alma Onayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p><b>@Model.Title</b> ürününü satın almak üzeresin.</p>
+                <p>Fiyat: <b>@Model.Price ₺</b></p>
+                <p>Bu işlem temsili olup geri alınamaz.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Vazgeç
+                </button>
+
+                <form method="post" action="/Product/Buy/@Model.Id">
+                    <button type="submit" class="btn btn-success">
+                        ✅ Onayla & Satın Al
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

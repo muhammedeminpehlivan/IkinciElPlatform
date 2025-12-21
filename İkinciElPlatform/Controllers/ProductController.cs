@@ -1,8 +1,11 @@
 ﻿using IkinciElPlatform.Data;
 using IkinciElPlatform.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+
 
 namespace IkinciElPlatform.Controllers
 {
@@ -173,5 +176,43 @@ namespace IkinciElPlatform.Controllers
 
             return RedirectToAction("MyProducts", "Profile");
         }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Buy(int id)
+        {
+            var product = _context.Products.FirstOrDefault(x => x.Id == id);
+
+            if (product == null || !product.IsActive)
+                return RedirectToAction("Index", "Home");
+
+            var buyerId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+            // ❌ Satıcı kendi ürününü satın alamaz (güzel dokunuş)
+            if (product.UserId == buyerId)
+            {
+                TempData["BuyMessage"] = "Kendi ürününü satın alamazsın.";
+                return RedirectToAction("Detail", new { id });
+            }
+
+            var purchase = new Purchase
+            {
+                ProductId = product.Id,
+                BuyerId = buyerId,
+                SellerId = product.UserId,
+                PurchaseDate = DateTime.Now,
+                Status = "Satıldı"
+            };
+
+            product.IsActive = false;
+
+            _context.Purchases.Add(purchase);
+            _context.SaveChanges();
+
+            TempData["BuyMessage"] = "🛒 Ürün başarıyla satın alındı.";
+
+            // ✅ BOŞ SAYFA YOK → Satın Aldıklarım
+            return RedirectToAction("MyPurchases", "Profile");
+        }
+
     }
 }

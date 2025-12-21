@@ -34,5 +34,7 @@ namespace IkinciElPlatform.Models
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+        public ICollection<Purchase> Purchases { get; set; }
+
     }
 }

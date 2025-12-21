@@ -82,5 +82,33 @@ namespace IkinciElPlatform.Controllers
 
             return RedirectToAction("MyProducts");
         }
+        [Authorize]
+        public IActionResult SoldProducts()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var soldProducts = _context.Purchases
+                .Where(x => x.SellerId == userId)
+                .Include(x => x.Product)
+                .Select(x => x.Product)
+                .ToList();
+
+            return View(soldProducts);
+        }
+        [Authorize]
+        public IActionResult MyPurchases()
+        {
+            var userId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+            var purchases = _context.Purchases
+                .Where(x => x.BuyerId == userId)
+                .Include(x => x.Product)
+                .OrderByDescending(x => x.PurchaseDate)
+                .ToList();
+
+            return View(purchases);
+        }
+
+
     }
 }

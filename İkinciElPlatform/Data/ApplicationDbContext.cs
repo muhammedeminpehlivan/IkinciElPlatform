@@ -17,6 +17,7 @@ namespace IkinciElPlatform.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; } // ✅ EKLENDİ
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
 
     }

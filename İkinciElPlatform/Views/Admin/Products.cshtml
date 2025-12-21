@@ -23,21 +23,39 @@
                 <td>@item.Category?.Name</td>
                 <td>@item.Price ₺</td>
                 <td>@item.SellerName</td>
+
+                <!-- ✅ DURUM -->
                 <td>
                     @if (item.IsActive)
                     {
-                        <span class="badge bg-success">Aktif</span>
+                        <span class="badge bg-success">🟢 Aktif</span>
+                    }
+                    else if (item.Purchases != null && item.Purchases.Any())
+                    {
+                        <span class="badge bg-primary">🛒 Satın Alındı</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">Pasif</span>
+                        <span class="badge bg-secondary">⚪ Pasif</span>
                     }
                 </td>
+
+                <!-- ✅ İŞLEMLER -->
                 <td>
-                    <a href="/Admin/ToggleProductStatus/@item.Id"
-                       class="btn btn-warning btn-sm">
-                        🔄 Aktif / Pasif
-                    </a>
+                    @* Satın alınan üründe aktif/pasif butonu çıkmaz *@
+                    @if (item.Purchases == null || !item.Purchases.Any())
+                    {
+                        <a href="/Admin/ToggleProductStatus/@item.Id"
+                           class="btn btn-warning btn-sm me-1">
+                            🔄 Aktif / Pasif
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted" style="font-size:13px;">
+                            Satıldı
+                        </span>
+                    }
 
                     <a href="/Admin/DeleteProduct/@item.Id"
                        class="btn btn-danger btn-sm"
