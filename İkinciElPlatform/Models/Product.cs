@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IkinciElPlatform.Models
@@ -14,27 +15,40 @@ namespace IkinciElPlatform.Models
         public string Description { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }   // ✅ SADECE DECIMAL
+        public decimal Price { get; set; }
 
-        public string? ImageUrl { get; set; }
-
-        public string Brand { get; set; }
-        public string Condition { get; set; }
-        public string Location { get; set; }
-        public bool IsNegotiable { get; set; }
-
-        public bool IsActive { get; set; } = true;
-        public DateTime CreatedDate { get; set; }
-
-        public string SellerName { get; set; }
-        public string UserId { get; set; }
-
+        [Required]
         public int CategoryId { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
-        public ICollection<Purchase> Purchases { get; set; }
+        [Required]
+        public string Brand { get; set; }
 
+        [Required]
+        public string Condition { get; set; }
+
+        [Required]
+        public string Location { get; set; }
+
+        public bool IsNegotiable { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        // ❌ FORMDA YOK → VALIDATION DIŞI
+        [ValidateNever]
+        public string UserId { get; set; }
+
+        [ValidateNever]
+        public string SellerName { get; set; }
+
+        [ValidateNever]
+        public string ImageUrl { get; set; }
+
+        [ValidateNever]
+        public Category Category { get; set; }
+
+        [ValidateNever]
+        public ICollection<Purchase> Purchases { get; set; }
     }
 }

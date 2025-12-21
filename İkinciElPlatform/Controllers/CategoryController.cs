@@ -2,6 +2,7 @@
 using IkinciElPlatform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IkinciElPlatform.Models;
 
 namespace IkinciElPlatform.Controllers
 {

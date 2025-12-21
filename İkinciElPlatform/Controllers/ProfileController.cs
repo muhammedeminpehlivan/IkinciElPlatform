@@ -32,11 +32,11 @@ namespace IkinciElPlatform.Controllers
         public IActionResult MyProducts()
         {
             var userId = _userManager.GetUserId(User);
-
             var myProducts = _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.UserId == userId)
+                .Where(p => p.UserId != null && p.UserId == userId)
                 .ToList();
+
 
             return View(myProducts);
         }
@@ -53,35 +53,40 @@ namespace IkinciElPlatform.Controllers
             return View();
         }
 
-        // ✅ ÜRÜN EKLE (POST)
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateProduct(Product product, IFormFile imageFile)
         {
-            var userId = _userManager.GetUserId(User);
-            product.UserId = userId;
+            
 
-            if (imageFile != null)
-            {
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    imageFile.CopyTo(fileStream);
-                }
-
-                product.ImageUrl = "/uploads/" + uniqueFileName;
-            }
+            product.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             product.SellerName = User.Identity.Name;
             product.CreatedDate = DateTime.Now;
+            product.IsActive = true;
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.CategoryList = _context.Categories
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
+
+                return View(product);
+            }
 
             _context.Products.Add(product);
             _context.SaveChanges();
 
-
             return RedirectToAction("MyProducts");
         }
+
+
+
+
+
         [Authorize]
         public IActionResult SoldProducts()
         {

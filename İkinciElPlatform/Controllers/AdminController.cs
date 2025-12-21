@@ -2,6 +2,8 @@
 using IkinciElPlatform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IkinciElPlatform.Models;
+
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -109,7 +111,7 @@ namespace IkinciElPlatform.Controllers
             var totalProducts = _context.Products.Count();
             var activeProducts = _context.Products.Count(x => x.IsActive);
             var passiveProducts = _context.Products.Count(x => !x.IsActive);
-            var totalFavorites = _context.Favorites.Count();
+            var t
             var totalSales = _context.Purchases.Count(); // 🔥 YENİ
 
             var mostFavoritedProduct = _context.Favorites
