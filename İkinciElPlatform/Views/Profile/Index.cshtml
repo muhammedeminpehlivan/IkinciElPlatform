@@ -22,15 +22,15 @@
         box-shadow: 0 12px 25px rgba(0,0,0,0.15);
     }
 
-        .profile-header h2 {
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
+    .profile-header h2 {
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
 
-        .profile-header p {
-            opacity: 0.95;
-            font-size: 15px;
-        }
+    .profile-header p {
+        opacity: 0.95;
+        font-size: 15px;
+    }
 
     .profile-cards {
         margin-top: 45px;
@@ -48,21 +48,21 @@
         transition: 0.3s;
     }
 
-        .profile-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 34px rgba(0,0,0,0.18);
-        }
+    .profile-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 34px rgba(0,0,0,0.18);
+    }
 
-        .profile-card h5 {
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 8px;
-        }
+    .profile-card h5 {
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
 
-        .profile-card p {
-            font-size: 14px;
-            color: #475569;
-        }
+    .profile-card p {
+        font-size: 14px;
+        color: #475569;
+    }
 
     .profile-btn {
         display: inline-block;
@@ -76,31 +76,47 @@
         transition: 0.3s;
     }
 
-        .profile-btn:hover {
-            filter: brightness(1.1);
-            transform: scale(1.05);
-        }
+    .profile-btn:hover {
+        filter: brightness(1.1);
+        transform: scale(1.05);
+    }
+
+    /* ❤️ Favoriler kartı için özel renk */
+    .fav-btn {
+        background: linear-gradient(135deg, #ef4444, #f97316);
+    }
 </style>
 
 <div class="profile-wrapper">
 
     <div class="profile-header">
         <h2>👤 Profil Panelim</h2>
-        <p>İlanlarını yönet, yeni ürün ekle ve satışlarını takip et</p>
+        <p>İlanlarını yönet, favorilerini incele ve satışlarını takip et</p>
     </div>
 
     <div class="profile-cards">
 
+        <!-- ➕ Yeni İlan -->
         <div class="profile-card">
             <h5>➕ Yeni İlan Ekle</h5>
             <p>Yeni ürününü hızlıca satışa çıkart</p>
             <a href="/Profile/CreateProduct" class="profile-btn">Yeni İlan</a>
         </div>
 
+        <!-- 📦 İlanlarım -->
         <div class="profile-card">
             <h5>📦 İlanlarım</h5>
             <p>Eklediğin tüm ürünleri görüntüle</p>
             <a href="/Profile/MyProducts" class="profile-btn">İlanlarım</a>
+        </div>
+
+        <!-- ❤️ Favorilerim -->
+        <div class="profile-card">
+            <h5>❤️ Favorilerim</h5>
+            <p>Beğendiğin ve kaydettiğin ürünleri incele</p>
+            <a href="/Favorite/MyFavorites" class="profile-btn fav-btn">
+                Favorilerim
+            </a>
         </div>
 
     </div>

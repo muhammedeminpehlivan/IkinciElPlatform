@@ -23,6 +23,7 @@ namespace IkinciElPlatform.Controllers
 
         // ✅ PROFİL ANA SAYFASI
         public IActionResult Index()
+
         {
             return View();
         }
